@@ -1,1 +1,1 @@
-This folder contains the scrapeIt module and a DockerFile to configure an AWS Lambda image with scrapeIt pre-installed.
+This folder contains the scrapeIt module and a DockerFile to configure an AWS Lambda image with scrapeIt installed. 

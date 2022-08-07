@@ -1,0 +1,6 @@
+tempfile
+bs4
+requests
+selenium
+time
+re
