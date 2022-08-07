@@ -1,9 +1,8 @@
 #%%
-
 from bs4 import BeautifulSoup
 
 def get_info(soup):
-    
+    '''this function gets data from http://example.python-scraping.com/places/default/view/Bosnia-and-Herzegovina-29'''
     labels = []
     data = []
     for label in soup.findAll('label'):
