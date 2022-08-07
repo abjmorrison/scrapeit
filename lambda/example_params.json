@@ -1,0 +1,8 @@
+params = {
+    "description": "a config file to scrape example information",
+    "site_url" : "http://example.python-scraping.com/places/default/view/Bosnia-and-Herzegovina-29",
+    "base_url" : "http://example.python-scraping.com/",
+    "find" : {"statements":["places", "iso"], "tag": "a", "attribute":"href"},
+    "href" : true
+    }
+
