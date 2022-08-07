@@ -38,7 +38,22 @@ class webScraper:
                 raise TypeError('download links not provided to type direct_download')
         else: 
             raise TypeError('Not a supported scrape type. Allowed types: direct_download, html, dynamic_content')
+    
+    def get_links(self):
+        '''this function returns a list of href tagged links from the soup'''
+        atts = []
+        for att in self.soup.findAll(self.find['tag'], href=self.href):
+            if all(x in att.get(self.find['attribute']) for x in self.find['statements']):
+                if self.base_url is not None:
+                    atts.append(self.base_url+att.get(self.find['attribute']))
+                else:
+                    atts.append(self.site_url+att.get(self.find['attribute']))
+            else:
+                continue
+        print('Attributes retrieved from HTML.')
+        self.attributes = atts
 
+        return self
     def pipeline(self):
         '''runs a user defined data processing pipeline to parse the text from the scrape'''
         data = self.pipeline(self.soup)
@@ -69,22 +84,6 @@ class scrapeHTML(webScraper):
         soup = BeautifulSoup(r.content)
         print('HTML retrieved.')
         self.soup = soup
-        return self
-
-    def get_links(self):
-        '''this function returns a list of href tagged links from the soup'''
-        atts = []
-        for att in self.soup.findAll(self.find['tag'], href=self.href):
-            if all(x in att.get(self.find['attribute']) for x in self.find['statements']):
-                if self.base_url is not None:
-                    atts.append(self.base_url+att.get(self.find['attribute']))
-                else:
-                    atts.append(self.site_url+att.get(self.find['attribute']))
-            else:
-                continue
-        print('Attributes retrieved from HTML.')
-        self.attributes = atts
-
         return self
 
 class scrapeDynamicContent(webScraper):
