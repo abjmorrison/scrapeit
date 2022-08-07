@@ -18,20 +18,18 @@ import numpy as np
 class webScraper:
     '''The superclass validates the input choices and controls common functions across scrapers'''
     def __init__(self, scrape_type, links=None):
-        self.scrape_type = scrape_type
-        self.description = None
-        self.pipeline = None
+        self.scrape_type = scrape_type # html, dynamic_content, direct_download
+        self.description = None # user defined description
+        self.pipeline = None # user defined data processing function
 
         if scrape_type == 'html':
             if links is not None: 
                 raise TypeError("html does accept direct download links. Change type to direct_download or delete links.")
             print('html set')
-
         elif scrape_type == 'dynamic_content':
             if links is not None: 
                 raise TypeError("dynamic_content cannot accept direct download links. Change type to direct_download or delete links.")
             print('dynamic_content set')
-
         elif scrape_type == 'direct_download':
             self.attributes = links
             if links == None:
@@ -54,6 +52,7 @@ class webScraper:
         self.attributes = atts
 
         return self
+
     def pipeline(self):
         '''runs a user defined data processing pipeline to parse the text from the scrape'''
         data = self.pipeline(self.soup)
@@ -84,6 +83,7 @@ class scrapeHTML(webScraper):
         soup = BeautifulSoup(r.content)
         print('HTML retrieved.')
         self.soup = soup
+
         return self
 
 class scrapeDynamicContent(webScraper):
@@ -119,11 +119,11 @@ class scrapeDynamicContent(webScraper):
 
     def get_dynamic_content(self):
         '''gets web content via Selenium and loads it to BeautifulSoup for parsing'''
-        driver = self.set_chrome()
-        driver.get(self.site_url)
+        driver = self.set_chrome() # set chrome options
+        driver.get(self.site_url) # get site content 
         sleep(20) # make sure dynamic content has loaded
         print('web page scraping complete')
-        self.soup = BeautifulSoup(driver.page_source)
+        self.soup = BeautifulSoup(driver.page_source) # create soup
         return self
 
 class directDownload(webScraper):
