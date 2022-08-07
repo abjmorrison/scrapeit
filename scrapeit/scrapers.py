@@ -15,7 +15,8 @@ from re import search
 import pandas as pd
 import numpy as np
 
-class web_scraper:
+class webScraper:
+    '''The superclass validates the input choices and controls common functions across scrapers'''
     def __init__(self, scrape_type, links=None):
         self.scrape_type = scrape_type
         self.description = None
@@ -43,7 +44,8 @@ class web_scraper:
         data = self.pipeline(self.soup)
         return data
 
-class scrapeHTML(web_scraper):
+class scrapeHTML(webScraper):
+    '''scrapeHTML scrapes a static site for html content'''
     def __init__(self, params, links=None):
         super(scrapeHTML, self).__init__(scrape_type='html', links=links)
         self.description = params['description']
@@ -70,6 +72,7 @@ class scrapeHTML(web_scraper):
         return self
 
     def get_links(self):
+        '''this function returns a list of href tagged links from the soup'''
         atts = []
         for att in self.soup.findAll(self.find['tag'], href=self.href):
             if all(x in att.get(self.find['attribute']) for x in self.find['statements']):
@@ -84,7 +87,8 @@ class scrapeHTML(web_scraper):
 
         return self
 
-class scrapeDynamicContent(web_scraper):
+class scrapeDynamicContent(webScraper):
+    '''scrapeDynamicContent uses the selenium library and headless chrome to scrape dynamic content from javascript'''
     def __init__(self, params, links=None):
         super(scrapeDynamicContent, self).__init__(scrape_type='dynamic_content', links=links)
         self.description = params['description']
@@ -123,7 +127,8 @@ class scrapeDynamicContent(web_scraper):
         self.soup = BeautifulSoup(driver.page_source)
         return self
 
-class directDownload(web_scraper):
+class directDownload(webScraper):
+    '''directDownload accepts a list of links to download and returns a dictionary with a json of the data included'''
     def __init__(self, params, links=None):
         super(directDownload, self).__init__(scrape_type='direct_download', links=links)
         self.description = params['description']
@@ -132,8 +137,10 @@ class directDownload(web_scraper):
         self.pipeline = params['pipeline']
         if links is not None:
             self.attributes = links # retrieved attributes from html
+        else: print('Warning! You have not provided a list of links to directDownload. Set attributes using obj.attributes')
     
     def get_downloads(self):
+        '''download files at provided links'''
         session = re.Session()
         retry = Retry(connect=3, backoff_factor=0.5)
         adapter = HTTPAdapter(max_retries=retry)
