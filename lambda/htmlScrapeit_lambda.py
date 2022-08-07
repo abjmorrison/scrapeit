@@ -11,4 +11,3 @@ def handler(event, context):
     values = scraper.pipeline(get_info)
 
     return links, values
-
