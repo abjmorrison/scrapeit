@@ -1,4 +1,4 @@
-FROM abjmorrison/amoneys-repo:webscraper1.0
+FROM abjmorrison/amoneys-publicrepo:scrapeit1.1
 
 ADD pipelines pipelines
 

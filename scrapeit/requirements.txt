@@ -1,6 +1,7 @@
-tempfile
 bs4
 requests
+boto3
+lxml
 selenium
-time
-re
+pandas
+numpy
