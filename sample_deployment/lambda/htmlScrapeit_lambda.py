@@ -1,7 +1,7 @@
 
 #%%
-import scrapers as scrapeit
-from bih_processor import get_info
+import scrapeit.scrapers as scrapeit
+from pipelines.bih_processor import get_info
 
 def handler(event, context):
     
