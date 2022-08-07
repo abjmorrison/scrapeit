@@ -1,0 +1,25 @@
+service: scrapeit-lambda
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'prod'}
+  region: ${env:AWS_REGION, 'my-region'}
+  ecr:
+    images:
+      htmlScraperImage:
+        path: ./
+        platform: linux/amd64
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 's3:PutObject'
+            - 's3:GetObject'
+            - 's3:ListBucket'
+          Resource:
+            - 'arn:aws:s3:::my-bucket'
+            - 'arn:aws:s3:::my-bucket/*'
+
+functions:
+  - ${file(./lambda/scrapeitScraper.yml)}

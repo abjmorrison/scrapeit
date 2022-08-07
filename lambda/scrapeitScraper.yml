@@ -1,0 +1,19 @@
+# scrapeitScraper.yml
+
+scrapeitScraper:
+  description: "This function scrapes data from websites"
+  timeout: 300
+  memorySize: 512
+  image:
+    name: scrapeitImg
+  runtime: python3.9
+  events:
+    - schedule:
+        rate:
+          - cron(15 01 * * ? *)
+        input:
+          description: a config file to scrape example information
+          site_url : http://example.python-scraping.com/places/default/view/Bosnia-and-Herzegovina-29
+          base_url : http://example.python-scraping.com/
+          find : {"statements":["places", "iso"], "tag": "a", "attribute":"href"}
+          href : true
