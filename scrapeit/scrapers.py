@@ -20,7 +20,6 @@ class webScraper:
     def __init__(self, scrape_type, links=None):
         self.scrape_type = scrape_type # html, dynamic_content, direct_download
         self.description = None # user defined description
-        self.pipeline = None # user defined data processing function
 
         if scrape_type == 'html':
             if links is not None: 
@@ -53,10 +52,9 @@ class webScraper:
 
         return self
 
-    def pipeline(self):
+    def pipeline(self, pipeline):
         '''runs a user defined data processing pipeline to parse the text from the scrape'''
-        data = self.pipeline(self.soup)
-        return data
+        return pipeline(self.soup)
 
 class scrapeHTML(webScraper):
     '''scrapeHTML scrapes a static site for html content'''
@@ -68,7 +66,6 @@ class scrapeHTML(webScraper):
         self.find = params['find'] # parameter to find in the html 
         self.href = params['href'] # whether or not to look for href tags (links)
         self.attributes = [] # retrieved attributes from html
-        self.pipeline = params["pipeline"] # data processing function to use
 
     def get_html(self):
         ''' this function returns a soup of html from a static website'''
@@ -94,7 +91,6 @@ class scrapeDynamicContent(webScraper):
         self.site_url = params['site_url'] # Site url for data
         self.href = params['href'] # whether or not to look for href tags (links)
         self.attributes = [] # retrieved attributes from html
-        self.pipeline = params['pipeline']
 
     def set_chrome(self):
         '''sets headless chrome options for Selenium and returns a webdriver'''
@@ -133,7 +129,6 @@ class directDownload(webScraper):
         self.description = params['description']
         self.site_url = params['site_url'] # Site url for data
         self.href = params['href'] # whether or not to look for href tags (links)
-        self.pipeline = params['pipeline']
         if links is not None:
             self.attributes = links # retrieved attributes from html
         else: print('Warning! You have not provided a list of links to directDownload. Set attributes using obj.attributes')
