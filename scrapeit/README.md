@@ -1,0 +1,1 @@
+This folder contains the scrapeIt module. If you are executing the serverless deployment, the Dockerfile found in this repo uses a pre-built image with scrapeIt installed.
